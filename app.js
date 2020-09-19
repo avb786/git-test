@@ -6,14 +6,18 @@ const logger = require('morgan');
 const moongoose = require('mongoose')
 const session = require('express-session');
 const fileStorage = require('session-file-store')(session);
+const passport = require('passport')
+const authenticate = require('./authenticate')
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const dishRoutes = require('./routes/dishRoutes');
 const leaderRoutes = require('./routes/leaderRouter');
 const promotionRoutes = require('./routes/promoRouter');
-const { Buffer } = require('buffer');
 const url = 'mongodb://localhost:27017/conFusion';
-const connect = moongoose.connect(url)
+const connect = moongoose.connect(url, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+})
 
 
 const app = express();
@@ -32,28 +36,19 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   store: new fileStorage()
-
 }))
-
+app.use(passport.initialize())
+app.use(passport.session())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 function auth(req, res, next) {
-  console.log(req.session);
-
-  if (!req.session.user) {
+  if (!req.user) {
     var err = new Error('You are not authenticated!');
     err.status = 403;
     return next(err);
   }
   else {
-    if (req.session.user === 'authenticated') {
-      next();
-    }
-    else {
-      var err = new Error('You are not authenticated!');
-      err.status = 403;
-      return next(err);
-    }
+    next();
   }
 }
 
@@ -70,7 +65,6 @@ app.use('/', indexRouter);
 app.use('/leaders', leaderRoutes);
 app.use('/dishes', dishRoutes);
 app.use('/promotions', promotionRoutes);
-// app.use('/users', leaderRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
