@@ -55,6 +55,7 @@ app.use('/users', usersRouter);
 // }
 
 // app.use(auth)
+app.use(authenticate.verifyOrdinaryUser);
 app.use(express.static(path.join(__dirname, 'public')));
 
 connect.then((db) => {
