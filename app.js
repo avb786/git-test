@@ -13,6 +13,7 @@ const usersRouter = require('./routes/users');
 const dishRoutes = require('./routes/dishRoutes');
 const leaderRoutes = require('./routes/leaderRouter');
 const promotionRoutes = require('./routes/promoRouter');
+const uploadRoutes = require('./routes/uploadRouter');
 const config = require('./config')
 const url = config.mongoUrl;
 const connect = moongoose.connect(url, {
@@ -76,6 +77,7 @@ app.use('/', indexRouter);
 app.use('/leaders', leaderRoutes);
 app.use('/dishes', dishRoutes);
 app.use('/promotions', promotionRoutes);
+app.use('/imageUpload', uploadRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
