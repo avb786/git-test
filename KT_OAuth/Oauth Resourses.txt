@@ -1,0 +1,5 @@
+https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2
+
+https://mherman.org/blog/social-authentication-with-passport-dot-js/
+
+http://www.bubblecode.net/en/2016/01/22/understanding-oauth2/
