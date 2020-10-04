@@ -14,6 +14,7 @@ const dishRoutes = require('./routes/dishRoutes');
 const leaderRoutes = require('./routes/leaderRouter');
 const promotionRoutes = require('./routes/promoRouter');
 const uploadRoutes = require('./routes/uploadRouter');
+const favoriteRoutes = require('./routes/favoriteRoutes');
 const config = require('./config')
 const url = config.mongoUrl;
 const connect = moongoose.connect(url, {
@@ -52,18 +53,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// function auth(req, res, next) {
-//   if (!req.user) {
-//     var err = new Error('You are not authenticated!');
-//     err.status = 403;
-//     return next(err);
-//   }
-//   else {
-//     next();
-//   }
-// }
-
-// app.use(auth)
 app.use(authenticate.verifyOrdinaryUser);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -78,6 +67,7 @@ app.use('/leaders', leaderRoutes);
 app.use('/dishes', dishRoutes);
 app.use('/promotions', promotionRoutes);
 app.use('/imageUpload', uploadRoutes);
+app.use('/favorites', favoriteRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
